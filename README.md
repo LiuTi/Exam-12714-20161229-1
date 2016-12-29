@@ -1,3 +1,7 @@
 # Exam-12714-20161229-1
 
-¹þ¹þ¹þ
+mvn exec:java -Dexec.mainClass="com.hand.main.AddFilm"
+
+
+root
+123456
