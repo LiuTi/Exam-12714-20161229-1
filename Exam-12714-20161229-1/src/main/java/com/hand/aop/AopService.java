@@ -6,6 +6,8 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 /**
  * 
@@ -15,27 +17,25 @@ import org.springframework.stereotype.Component;
 @Component
 @Aspect
 public class AopService {
+	@Autowired
+    private ApplicationContext applicationContext;
+	
 	//返回值类型  类名  方法名    
 	@Pointcut("execution(* com.hand.service.*.*(..))")
     public void run(){
     }
 
-   /* @Before("run()")
-    public void before(ProceedingJoinPoint pdjp) throws Throwable{
-        Object o=pdjp.proceed();
-        System.out.println("before insert film data");
-    }*/
-    @Around("run()")
-    public Object around(ProceedingJoinPoint pdjp) throws Throwable{
-        Object o=pdjp.proceed();
-        return o;
+    @Before("run()")
+    public void before(){
+    	BeforeEvent beforeEvent = new BeforeEvent("Before Insert Film Data");
+        applicationContext.publishEvent(beforeEvent);
     }
-/*
+
     @After("run()")
-    public void after(ProceedingJoinPoint pdjp) throws Throwable{
-        Object o=pdjp.proceed();
-        System.out.println("before insert film data");
-    }*/
+    public void after(){
+    	AfterEvent afterEvent = new AfterEvent("After Insert Film Data");
+        applicationContext.publishEvent(afterEvent);
+    }
 
 
 }
